@@ -1,269 +1,260 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Diseño AME</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f5f3;
-      color: #181818;
-    }
-
-    header {
-      padding: 40px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 2px;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: #181818;
-      margin-left: 30px;
-      font-size: 14px;
-    }
-
-    .hero {
-      padding: 80px 8% 70px;
-      max-width: 1100px;
-    }
-
-    .hero p {
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      font-size: 12px;
-      margin-bottom: 20px;
-      color: #777;
-    }
-
-    .hero h1 {
-      font-size: clamp(48px, 8vw, 100px);
-      line-height: 0.95;
-      font-weight: 500;
-    }
-
-    .projects {
-      padding: 30px 8% 100px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
-    }
-
-    .project {
-      background: white;
-      overflow: hidden;
-      border-radius: 4px;
-      transition: transform 0.35s ease;
-    }
-
-    .project:hover {
-      transform: translateY(-8px);
-    }
-
-    .project-image {
-      width: 100%;
-      height: 430px;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease;
-    }
-
-    .project:hover .project-image {
-      transform: scale(1.03);
-    }
-
-    .project-info {
-      padding: 22px;
-    }
-
-    .project-number {
-      font-size: 12px;
-      color: #999;
-      margin-bottom: 10px;
-    }
-
-    .project-title {
-      font-size: 24px;
-      margin-bottom: 8px;
-    }
-
-    .project-description {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #666;
-    }
-
-    footer {
-      margin: 0 8%;
-      padding: 35px 0;
-      border-top: 1px solid #ccc;
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      color: #777;
-    }
-
-    @media (max-width: 850px) {
-      .projects {
-        grid-template-columns: 1fr;
-      }
-
-      .project-image {
-        height: 500px;
-      }
-
-      nav {
-        display: none;
-      }
-    }
-
-    @media (max-width: 500px) {
-      header,
-      .hero,
-      .projects {
-        padding-left: 5%;
-        padding-right: 5%;
-      }
-
-      .hero {
-        padding-top: 50px;
-      }
-
-      .project-image {
-        height: 380px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transcriptor de Voz</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #1a1d24;
+    --accent: #5b8cff;
+    --accent-hover: #7ba0ff;
+    --text: #e8eaf0;
+    --muted: #8b90a0;
+    --danger: #ff5b5b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    padding: 20px;
+  }
+  .card {
+    width: 100%;
+    max-width: 640px;
+    background: var(--panel);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+  h1 {
+    font-size: 1.4rem;
+    margin: 0 0 4px;
+  }
+  p.subtitle {
+    color: var(--muted);
+    margin: 0 0 24px;
+    font-size: 0.9rem;
+  }
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  button:active { transform: scale(0.97); }
+  #startBtn {
+    background: var(--accent);
+    color: white;
+  }
+  #startBtn:hover { background: var(--accent-hover); }
+  #startBtn.recording {
+    background: var(--danger);
+  }
+  #clearBtn {
+    background: #2a2e38;
+    color: var(--text);
+  }
+  #clearBtn:hover { background: #343945; }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  .dot.live {
+    background: var(--danger);
+    animation: pulse 1.2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,91,91,0.5); }
+    70% { box-shadow: 0 0 0 8px rgba(255,91,91,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,91,91,0); }
+  }
+  #transcript {
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: #0f1115;
+    border: 1px solid #2a2e38;
+    border-radius: 12px;
+    padding: 16px;
+    line-height: 1.6;
+    font-size: 1rem;
+    white-space: pre-wrap;
+  }
+  .interim {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .error {
+    color: var(--danger);
+    font-size: 0.85rem;
+    margin-top: 12px;
+    display: none;
+  }
+  select {
+    background: #2a2e38;
+    color: var(--text);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+</style>
 </head>
-
 <body>
+  <div class="card">
+    <h1>🎙️ Transcriptor de Voz</h1>
+    <p class="subtitle">Habla y verás la transcripción en tiempo real</p>
 
-  <header>
-    <div class="logo">AME.</div>
+    <div class="controls">
+      <button id="startBtn">▶️ Iniciar</button>
+      <button id="clearBtn">🗑️ Limpiar</button>
+      <select id="langSelect">
+        <option value="es-CL">Español (Chile)</option>
+        <option value="es-ES">Español (España)</option>
+        <option value="en-US">English (US)</option>
+        <option value="pt-BR">Português (Brasil)</option>
+      </select>
+    </div>
 
-    <nav>
-      <a href="#trabajos">Trabajos</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-  </header>
+    <div class="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Detenido</span>
+    </div>
 
+    <div id="transcript"></div>
+    <div class="error" id="errorMsg"></div>
+  </div>
 
-  <section class="hero">
-    <p>Diseño · Arquitectura · Creatividad</p>
+<script>
+  const startBtn = document.getElementById('startBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const transcriptDiv = document.getElementById('transcript');
+  const statusDot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+  const errorMsg = document.getElementById('errorMsg');
+  const langSelect = document.getElementById('langSelect');
 
-    <h1>
-      Proyectos que<br>
-      hablan por sí solos.
-    </h1>
-  </section>
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  if (!SpeechRecognition) {
+    errorMsg.style.display = 'block';
+    errorMsg.textContent = 'Tu navegador no soporta reconocimiento de voz. Prueba con Google Chrome.';
+    startBtn.disabled = true;
+  }
 
-  <section class="projects" id="trabajos">
+  let recognition = null;
+  let listening = false;
+  let finalText = '';
 
-    <article class="project">
+  function createRecognition() {
+    const r = new SpeechRecognition();
+    r.continuous = true;
+    r.interimResults = true;
+    r.lang = langSelect.value;
 
-      <img
-        class="project-image"
-        src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3"
-        alt="Proyecto 1"
-      >
+    r.onresult = (event) => {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcriptPiece = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalText += transcriptPiece + ' ';
+        } else {
+          interim += transcriptPiece;
+        }
+      }
+      render(interim);
+    };
 
-      <div class="project-info">
+    r.onerror = (event) => {
+      errorMsg.style.display = 'block';
+      if (event.error === 'not-allowed') {
+        errorMsg.textContent = 'Permiso de micrófono denegado. Habilítalo en la configuración del navegador.';
+      } else if (event.error === 'no-speech') {
+        errorMsg.textContent = 'No se detectó voz. Sigue intentando.';
+      } else {
+        errorMsg.textContent = 'Error: ' + event.error;
+      }
+    };
 
-        <div class="project-number">01</div>
+    r.onend = () => {
+      if (listening) {
+        // Reinicia automáticamente si se corta (comportamiento típico del navegador)
+        r.start();
+      }
+    };
 
-        <h2 class="project-title">
-          Proyecto Casa
-        </h2>
+    return r;
+  }
 
-        <p class="project-description">
-          Diseño de espacios contemporáneos enfocados
-          en luminosidad, funcionalidad y materialidad.
-        </p>
+  function render(interim) {
+    transcriptDiv.innerHTML = escapeHtml(finalText) +
+      (interim ? '<span class="interim">' + escapeHtml(interim) + '</span>' : '');
+    transcriptDiv.scrollTop = transcriptDiv.scrollHeight;
+  }
 
-      </div>
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
 
-    </article>
+  startBtn.addEventListener('click', () => {
+    if (!listening) {
+      errorMsg.style.display = 'none';
+      recognition = createRecognition();
+      recognition.start();
+      listening = true;
+      startBtn.textContent = '⏹️ Detener';
+      startBtn.classList.add('recording');
+      statusDot.classList.add('live');
+      statusText.textContent = 'Escuchando…';
+      langSelect.disabled = true;
+    } else {
+      listening = false;
+      recognition.onend = null;
+      recognition.stop();
+      startBtn.textContent = '▶️ Iniciar';
+      startBtn.classList.remove('recording');
+      statusDot.classList.remove('live');
+      statusText.textContent = 'Detenido';
+      langSelect.disabled = false;
+    }
+  });
 
-
-    <article class="project">
-
-      <img
-        class="project-image"
-        src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d"
-        alt="Proyecto 2"
-      >
-
-      <div class="project-info">
-
-        <div class="project-number">02</div>
-
-        <h2 class="project-title">
-          Interiorismo
-        </h2>
-
-        <p class="project-description">
-          Una propuesta de interiorismo simple,
-          elegante y pensada para el uso cotidiano.
-        </p>
-
-      </div>
-
-    </article>
-
-
-    <article class="project">
-
-      <img
-        class="project-image"
-        src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0"
-        alt="Proyecto 3"
-      >
-
-      <div class="project-info">
-
-        <div class="project-number">03</div>
-
-        <h2 class="project-title">
-          Espacio Comercial
-        </h2>
-
-        <p class="project-description">
-          Identidad visual y diseño espacial para
-          crear una experiencia coherente y moderna.
-        </p>
-
-      </div>
-
-    </article>
-
-  </section>
-
-
-  <footer id="contacto">
-
-    <span>© 2026 Diseño AME</span>
-
-    <span>
-      Santiago · Chile
-    </span>
-
-  </footer>
-
+  clearBtn.addEventListener('click', () => {
+    finalText = '';
+    render('');
+  });
+</script>
 </body>
 </html>
